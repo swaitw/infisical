@@ -1,17 +1,17 @@
 <h1 align="center">
-  <img width="300" src="/img/logoname-black.svg#gh-light-mode-only" alt="infisical">
   <img width="300" src="/img/logoname-white.svg#gh-dark-mode-only" alt="infisical">
 </h1>
 <p align="center">
-  <p align="center">Open-source, end-to-end encrypted tool to manage secrets and configs across your team, devices, and infrastructure.</p>
+  <p align="center"><b>The open-source secret management platform</b>: Sync secrets/configs across your team/infrastructure and prevent secret leaks.</p>
 </p>
 
 <h4 align="center">
-  <a href="https://join.slack.com/t/infisical-users/shared_invite/zt-1kdbk07ro-RtoyEt_9E~fyzGo_xQYP6g">Slack</a> |
+  <a href="https://infisical.com/slack">Slack</a> |
   <a href="https://infisical.com/">Infisical Cloud</a> |
   <a href="https://infisical.com/docs/self-hosting/overview">Self-Hosting</a> |
-  <a href="https://infisical.com/docs/getting-started/introduction">Docs</a> |
-  <a href="https://www.infisical.com">Website</a>
+  <a href="https://infisical.com/docs/documentation/getting-started/introduction">Docs</a> |
+  <a href="https://www.infisical.com">Website</a> |
+  <a href="https://infisical.com/careers">Hiring (Remote/SF)</a>
 </h4>
 
 <h4 align="center">
@@ -25,9 +25,9 @@
     <img src="https://img.shields.io/github/commit-activity/m/infisical/infisical" alt="git commit activity" />
   </a>
   <a href="https://cloudsmith.io/~infisical/repos/">
-    <img src="https://img.shields.io/badge/Downloads-55.7k-orange" alt="Cloudsmith downloads" />
+    <img src="https://img.shields.io/badge/Downloads-6.95M-orange" alt="Cloudsmith downloads" />
   </a>
-  <a href="https://join.slack.com/t/infisical-users/shared_invite/zt-1kdbk07ro-RtoyEt_9E~fyzGo_xQYP6g">
+  <a href="https://infisical.com/slack">
     <img src="https://img.shields.io/badge/chat-on%20Slack-blueviolet" alt="Slack community channel" />
   </a>
   <a href="https://twitter.com/infisical">
@@ -35,341 +35,120 @@
   </a>
 </h4>
 
-<img src="/img/infisical_github_repo.png" width="100%" alt="Dashboard" />
+<img src="/img/infisical_github_repo2.png" width="100%" alt="Dashboard" />
 
-**Read this in other languages**: <kbd>[<img title="English" alt="English language" src="https://cdn.staticaly.com/gh/hjnilsson/country-flags/master/svg/us.svg" width="22">](i18n/README.en.md)</kbd>
-<kbd>[<img title="Spanish" alt="Spanish language" src="https://cdn.staticaly.com/gh/hjnilsson/country-flags/master/svg/es.svg" width="22">](i18n/README.es.md)</kbd>
-<kbd>[<img title="German" alt="German language" src="https://cdn.staticaly.com/gh/hjnilsson/country-flags/master/svg/de.svg" width="22">](i18n/README.de.md)</kbd>
-<kbd>[<img title="Korean" alt="Korean language" src="https://cdn.staticaly.com/gh/hjnilsson/country-flags/master/svg/kr.svg" width="22">](i18n/README.ko.md)</kbd>
-<kbd>[<img title="Turkish" alt="Turkish language" src="https://cdn.staticaly.com/gh/hjnilsson/country-flags/master/svg/tr.svg" width="22">](i18n/README.tr.md)</kbd>
-<kbd>[<img title="Bahasa Indonesia" alt="Bahasa Indonesia language" src="https://cdn.staticaly.com/gh/hjnilsson/country-flags/master/svg/id.svg" width="22">](i18n/README.id.md)</kbd>
-<kbd>[<img title="Portuguese - Brazil" alt="Portuguese - Brazil" src="https://cdn.staticaly.com/gh/hjnilsson/country-flags/master/svg/br.svg" width="22">](i18n/README.pt-br.md)</kbd>
-<kbd>[<img title="Japanese" alt="Japanese language" src="https://cdn.staticaly.com/gh/hjnilsson/country-flags/master/svg/jp.svg" width="22">](i18n/README.ja.md)</kbd>
-<kbd>[<img title="Italian" alt="Italian language" src="https://cdn.staticaly.com/gh/hjnilsson/country-flags/master/svg/it.svg" width="22">](i18n/README.it.md)</kbd>
+## Introduction
 
-**[Infisical](https://infisical.com)** is an open source, end-to-end encrypted secret manager which you can use to centralize your API keys and configs. From Infisical, you can then distribute these secrets across your whole development lifecycle - from development to production . It's designed to be simple and take minutes to get going.
+**[Infisical](https://infisical.com)** is the open source secret management platform that teams use to centralize their application configuration and secrets like API keys and database credentials as well as manage their internal PKI.
 
--   **[User-Friendly Dashboard](https://infisical.com/docs/getting-started/dashboard/project)** to manage your team's secrets and configs within projects
--   **[Language-Agnostic CLI](https://infisical.com/docs/cli/overview)** that pulls and injects esecrets and configs into your local workflow
--   **[Complete control over your data](https://infisical.com/docs/self-hosting/overview)** - host it yourself on any infrastructure
--   **Navigate Multiple Environments** per project (e.g. development, staging, production, etc.)
--   **Personal overrides** for secrets and configs
--   **[Integrations](https://infisical.com/docs/integrations/overview)** with CI/CD and production infrastructure
--   **[Infisical API](https://infisical.com/docs/api-reference/overview/introduction)** - manage secrets via HTTPS requests to the platform
--   **[Secret Versioning](https://infisical.com/docs/getting-started/dashboard/versioning)** to view the change history for any secret
--   **[Audit Logs](https://infisical.com/docs/getting-started/dashboard/audit-logs)** to record every action taken in a project
--   **[Point-in-time Secrets Recovery](https://infisical.com/docs/getting-started/dashboard/pit-recovery)** for rolling back to any snapshot of your secrets
--   **Role-based Access Controls** per environment
--   **2FA** (more options coming soon)
--   **Smart Security Alerts**
--   🔜 **1-Click Deploy** to AWS
--   🔜 **Automatic Secret Rotation**
--   🔜 **Slack & MS Teams** integrations
+We're on a mission to make security tooling more accessible to everyone, not just security teams, and that means redesigning the entire developer experience from ground up.
 
-And more.
+## Features
 
-## 🚀 Get started
+### Secrets Management:
 
-To quickly get started, visit our [get started guide](https://infisical.com/docs/getting-started/introduction).
+- **[Dashboard](https://infisical.com/docs/documentation/platform/project)**: Manage secrets across projects and environments (e.g. development, production, etc.) through a user-friendly interface.
+- **[Native Integrations](https://infisical.com/docs/integrations/overview)**: Sync secrets to platforms like [GitHub](https://infisical.com/docs/integrations/cicd/githubactions), [Vercel](https://infisical.com/docs/integrations/cloud/vercel), [AWS](https://infisical.com/docs/integrations/cloud/aws-secret-manager), and use tools like [Terraform](https://infisical.com/docs/integrations/frameworks/terraform), [Ansible](https://infisical.com/docs/integrations/platforms/ansible), and more.
+- **[Secret versioning](https://infisical.com/docs/documentation/platform/secret-versioning)** and **[Point-in-Time Recovery](https://infisical.com/docs/documentation/platform/pit-recovery)**: Keep track of every secret and project state; roll back when needed.
+- **[Secret Rotation](https://infisical.com/docs/documentation/platform/secret-rotation/overview)**: Rotate secrets at regular intervals for services like [PostgreSQL](https://infisical.com/docs/documentation/platform/secret-rotation/postgres), [MySQL](https://infisical.com/docs/documentation/platform/secret-rotation/mysql), [AWS IAM](https://infisical.com/docs/documentation/platform/secret-rotation/aws-iam), and more.
+- **[Dynamic Secrets](https://infisical.com/docs/documentation/platform/dynamic-secrets/overview)**: Generate ephemeral secrets on-demand for services like [PostgreSQL](https://infisical.com/docs/documentation/platform/dynamic-secrets/postgresql), [MySQL](https://infisical.com/docs/documentation/platform/dynamic-secrets/mysql), [RabbitMQ](https://infisical.com/docs/documentation/platform/dynamic-secrets/rabbit-mq), and more.
+- **[Secret Scanning and Leak Prevention](https://infisical.com/docs/cli/scanning-overview)**: Prevent secrets from leaking to git.
+- **[Infisical Kubernetes Operator](https://infisical.com/docs/documentation/getting-started/kubernetes)**: Deliver secrets to your Kubernetes workloads and automatically reload deployments.
+- **[Infisical Agent](https://infisical.com/docs/infisical-agent/overview)**: Inject secrets into applications without modifying any code logic.
 
-<p>
-  <a href="https://infisical.com/docs/self-hosting/overview" target="_blank"><img src="https://user-images.githubusercontent.com/78047717/218910609-18a75846-51a9-420a-a9a9-5958ac9c5505.png" height=150 /> </a>
-  <a href="https://app.infisical.com/signup" target="_blank"><img src="https://user-images.githubusercontent.com/78047717/218910520-b36a607f-af66-4a06-af10-6a2191ab02de.png" height=150></a>
-</p>
+### Internal PKI:
 
-## 🔥 What's cool about this?
+- **[Private Certificate Authority](https://infisical.com/docs/documentation/platform/pki/private-ca)**: Create CA hierarchies, configure [certificate templates](https://infisical.com/docs/documentation/platform/pki/certificates#guide-to-issuing-certificates) for policy enforcement, and start issuing X.509 certificates.
+- **[Certificate Management](https://infisical.com/docs/documentation/platform/pki/certificates)**: Manage the certificate lifecycle from [issuance](https://infisical.com/docs/documentation/platform/pki/certificates#guide-to-issuing-certificates) to [revocation](https://infisical.com/docs/documentation/platform/pki/certificates#guide-to-revoking-certificates) with support for CRL.
+- **[Alerting](https://infisical.com/docs/documentation/platform/pki/alerting)**: Configure alerting for expiring CA and end-entity certificates.
+- **[Infisical PKI Issuer for Kubernetes](https://infisical.com/docs/documentation/platform/pki/pki-issuer)**: Deliver TLS certificates to your Kubernetes workloads with automatic renewal.
+- **[Enrollment over Secure Transport](https://infisical.com/docs/documentation/platform/pki/est)**: Enroll and manage certificates via EST protocol.
 
-Infisical makes secret management simple and end-to-end encrypted by default. We're on a mission to make it more accessible to all developers, <i>not just security teams</i>.
+### Key Management (KMS):
 
-According to a [report](https://www.ekransystem.com/en/blog/secrets-management), only 10% of organizations use secret management solutions despite all using digital secrets to some extent.
+- **[Cryptographic Keys](https://infisical.com/docs/documentation/platform/kms)**: Centrally manage keys across projects through a user-friendly interface or via the API.
+- **[Encrypt and Decrypt Data](https://infisical.com/docs/documentation/platform/kms#guide-to-encrypting-data)**: Use symmetric keys to encrypt and decrypt data.
 
-If you care about efficiency and security, then Infisical is right for you.
+### General Platform:
+- **Authentication Methods**: Authenticate machine identities with Infisical using a cloud-native or platform agnostic authentication method ([Kubernetes Auth](https://infisical.com/docs/documentation/platform/identities/kubernetes-auth), [GCP Auth](https://infisical.com/docs/documentation/platform/identities/gcp-auth), [Azure Auth](https://infisical.com/docs/documentation/platform/identities/azure-auth), [AWS Auth](https://infisical.com/docs/documentation/platform/identities/aws-auth), [OIDC Auth](https://infisical.com/docs/documentation/platform/identities/oidc-auth/general), [Universal Auth](https://infisical.com/docs/documentation/platform/identities/universal-auth)).
+- **[Access Controls](https://infisical.com/docs/documentation/platform/access-controls/overview)**: Define advanced authorization controls for users and machine identities with [RBAC](https://infisical.com/docs/documentation/platform/access-controls/role-based-access-controls), [additional privileges](https://infisical.com/docs/documentation/platform/access-controls/additional-privileges), [temporary access](https://infisical.com/docs/documentation/platform/access-controls/temporary-access), [access requests](https://infisical.com/docs/documentation/platform/access-controls/access-requests), [approval workflows](https://infisical.com/docs/documentation/platform/pr-workflows), and more.
+- **[Audit logs](https://infisical.com/docs/documentation/platform/audit-logs)**: Track every action taken on the platform.
+- **[Self-hosting](https://infisical.com/docs/self-hosting/overview)**: Deploy Infisical on-prem or cloud with ease; keep data on your own infrastructure.
+- **[Infisical SDK](https://infisical.com/docs/sdks/overview)**: Interact with Infisical via client SDKs ([Node](https://infisical.com/docs/sdks/languages/node), [Python](https://github.com/Infisical/python-sdk-official?tab=readme-ov-file#infisical-python-sdk), [Go](https://infisical.com/docs/sdks/languages/go), [Ruby](https://infisical.com/docs/sdks/languages/ruby), [Java](https://infisical.com/docs/sdks/languages/java), [.NET](https://infisical.com/docs/sdks/languages/csharp))
+- **[Infisical CLI](https://infisical.com/docs/cli/overview)**: Interact with Infisical via CLI; useful for injecting secrets into local development and CI/CD pipelines.
+- **[Infisical API](https://infisical.com/docs/api-reference/overview/introduction)**: Interact with Infisical via API.
 
-We are currently working hard to make Infisical more extensive. Need any integrations or want a new feature? Feel free to [create an issue](https://github.com/Infisical/infisical/issues) or [contribute](https://infisical.com/docs/contributing/overview) directly to the repository.
+## Getting started
 
-## 🔌 Integrations
+Check out the [Quickstart Guides](https://infisical.com/docs/getting-started/introduction)
 
-We're currently setting the foundation and building [integrations](https://infisical.com/docs/integrations/overview) so secrets can be synced everywhere. Any help is welcome! :)
+| Use Infisical Cloud                                                                                                                                     | Deploy Infisical on premise                                                          |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| The fastest and most reliable way to <br> get started with Infisical is signing up <br> for free to [Infisical Cloud](https://app.infisical.com/login). | <br> View all [deployment options](https://infisical.com/docs/self-hosting/overview) |
 
-<table>
-<tr>
-  <th>Platforms </th>
-  <th>Frameworks</th>
-</tr>
-<tr>
-  <td>
+### Run Infisical locally
 
-<table>
-  <tbody>
-    <tr>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/platforms/docker?ref=github.com">
-          ✔️ Docker
-        </a>
-      </td>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/platforms/docker-compose?ref=github.com">
-          ✔️ Docker Compose
-        </a>
-      </td>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/cloud/heroku?ref=github.com">
-          ✔️ Heroku
-        </a>
-      </td>
-    </tr>
-    <tr>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/cloud/vercel?ref=github.com">
-          ✔️ Vercel
-        </a>
-      </td>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/platforms/kubernetes?ref=github.com">
-          ✔️ Kubernetes
-        </a>
-      </td>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/cloud/flyio?ref=github.com">
-          ✔️ Fly.io
-        </a>
-      </td>
-    </tr>
-    <tr>
-      <td align="left" valign="middle">
-         🔜 Supabase
-      </td>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/cicd/githubactions?ref=github.com">
-          ✔️ GitHub Actions
-        </a>
-      </td>
-      <td align="left" valign="middle">
-         🔜 Railway (https://github.com/Infisical/infisical/issues/271)
-      </td>
-    </tr>
-    <tr>
-      <td align="left" valign="middle">
-        🔜 GCP SM (https://github.com/Infisical/infisical/issues/285)
-      </td>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/cicd/gitlab?ref=github.com">
-          ✔️ GitLab CI/CD
-        </a>
-      </td>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/cicd/circleci?ref=github.com">
-          ✔️ CircleCI
-        </a>
-      </td>
-    </tr>
-    <tr>
-      <td align="left" valign="middle">
-        🔜 Jenkins
-      </td>
-      <td align="left" valign="middle">
-        🔜 Digital Ocean
-      </td>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/cloud/azure-key-vault?ref=github.com">
-          ✔️ Azure Key Vault
-        </a>
-      </td>
-    </tr>
-    <tr>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/cicd/travisci?ref=github.com">
-          ✔️ Travis CI
-        </a>
-      </td>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/cloud/aws-secret-manager?ref=github.com">
-          ✔️ AWS Secrets Manager
-        </a>
-      </td>
-      <td align="left" valign="middle">
-         🔜 Forge
-      </td>
-    </tr>
-    <tr>
-      <td align="left" valign="middle">
-         🔜 Bitbucket
-      </td>
-      <td align="left" valign="middle">
-          <a href="https://infisical.com/docs/integrations/cloud/aws-parameter-store?ref=github.com">
-            ✔️ AWS Parameter Store
-          </a>
-      </td>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/cloud/render?ref=github.com">
-          ✔️ Render
-        </a>
-      </td>
-    </tr>
-    <tr>
-      <td align="left" valign="middle">
-         🔜 BuddyCI
-      </td>
-      <td align="left" valign="middle">
-         🔜 Serverless
-      </td>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/cloud/netlify?ref=github.com">
-          ✔️ Netlify
-        </a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+To set up and run Infisical locally, make sure you have Git and Docker installed on your system. Then run the command for your system:
 
-  </td>
-<td>
+Linux/macOS:
 
-<table>
-  <tbody>
-    <tr>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/frameworks/react?ref=github.com">
-          ✔️ React
-        </a>
-      </td>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/frameworks/express?ref=github.com">
-          ✔️ Express
-        </a>
-      </td>
-    </tr>
-    <tr>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/frameworks/gatsby?ref=github.com">
-          ✔️ Gatsby
-        </a>
-      </td>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/frameworks/flask?ref=github.com">
-          ✔️ Flask
-        </a>
-      </td>
-    </tr>
-    <tr>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/frameworks/django?ref=github.com">
-          ✔️ Django
-        </a>
-      </td>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/frameworks/laravel?ref=github.com">
-          ✔️ Laravel
-        </a>
-      </td>
-    </tr>
-    <tr>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/frameworks/nestjs?ref=github.com">
-          ✔️ NestJS
-        </a>
-      </td>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/frameworks/remix?ref=github.com">
-          ✔️ Remix
-        </a>
-      </td>
-    </tr>
-    <tr>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/frameworks/nextjs?ref=github.com">
-          ✔️ Next.js
-        </a>
-      </td>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/frameworks/vite?ref=github.com">
-          ✔️ Vite
-        </a>
-      </td>
-    </tr>
-    <tr>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/frameworks/vue?ref=github.com">
-          ✔️ Vue
-        </a>
-      </td>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/frameworks/rails?ref=github.com">
-          ✔️ Ruby on Rails
-        </a>
-      </td>
-    </tr>
-    <tr>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/frameworks/fiber?ref=github.com">
-          ✔️ Fiber
-        </a>
-      </td>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/frameworks/nuxt?ref=github.com">
-          ✔️ Nuxt
-        </a>
-      </td>
-    </tr>
-    <tr>
-      <td align="left" valign="middle">
-        <a href="https://infisical.com/docs/integrations/frameworks/dotnet?ref=github.com">
-          ✔️ .NET
-        </a>
-      </td>
-      <td align="left" valign="middle">
-        And more...
-      </td>
-    </tr>
-  </tbody>
-</table>
+```console
+git clone https://github.com/Infisical/infisical && cd "$(basename $_ .git)" && cp .env.example .env && docker compose -f docker-compose.prod.yml up
+```
 
-</td>
-</tr>
-</table>
+Windows Command Prompt:
 
-## 💚 Community & Support
+```console
+git clone https://github.com/Infisical/infisical && cd infisical && copy .env.example .env && docker compose -f docker-compose.prod.yml up
+```
 
--   [Slack](https://join.slack.com/t/infisical-users/shared_invite/zt-1kdbk07ro-RtoyEt_9E~fyzGo_xQYP6g) (For live discussion with the community and the Infisical team)
--   [GitHub Discussions](https://github.com/Infisical/infisical/discussions) (For help with building and deeper conversations about features)
--   [GitHub Issues](https://github.com/Infisical/infisical-cli/issues) (For any bugs and errors you encounter using Infisical)
--   [Twitter](https://twitter.com/infisical) (Get news fast)
+Create an account at `http://localhost:80`
 
-## 🏘 Open-source vs. paid
+### Scan and prevent secret leaks
 
-This repo is entirely MIT licensed, with the exception of the `ee` directory which will contain premium enterprise features requiring a Infisical license in the future. We're currently focused on developing non-enterprise offerings first that should suit most use cases.
+On top managing secrets with Infisical, you can also [scan for over 140+ secret types]() in your files, directories and git repositories.
 
-## 🛡 Security
+To scan your full git history, run:
 
-Looking to report a security vulnerability? Please don't post about it in GitHub issue. Instead, refer to our [SECURITY.md](./SECURITY.md) file.
+```
+infisical scan --verbose
+```
 
-## 🚨 Stay Up-to-Date
+Install pre commit hook to scan each commit before you push to your repository
 
-Infisical officially launched as v.1.0 on November 21st, 2022. There are a lot of new features coming very frequently. Watch **releases** of this repository to be notified about future updates:
+```
+infisical scan install --pre-commit-hook
+```
 
-![infisical-star-github](https://github.com/Infisical/infisical/blob/main/.github/images/star-infisical.gif?raw=true)
+Lean about Infisical's code scanning feature [here](https://infisical.com/docs/cli/scanning-overview)
 
-## 🌱 Contributing
+## Open-source vs. paid
 
-Whether it's big or small, we love contributions ❤️ Check out our guide to see how to [get started](https://infisical.com/docs/contributing/overview).
+This repo available under the [MIT expat license](https://github.com/Infisical/infisical/blob/main/LICENSE), with the exception of the `ee` directory which will contain premium enterprise features requiring a Infisical license.
+
+If you are interested in managed Infisical Cloud of self-hosted Enterprise Offering, take a look at [our website](https://infisical.com/) or [book a meeting with us](https://infisical.cal.com/vlad/infisical-demo).
+
+## Security
+
+Please do not file GitHub issues or post on our public forum for security vulnerabilities, as they are public!
+
+Infisical takes security issues very seriously. If you have any concerns about Infisical or believe you have uncovered a vulnerability, please get in touch via the e-mail address security@infisical.com. In the message, try to provide a description of the issue and ideally a way of reproducing it. The security team will get back to you as soon as possible.
+
+Note that this security address should be used only for undisclosed vulnerabilities. Please report any security problems to us before disclosing it publicly.
+
+## Contributing
+
+Whether it's big or small, we love contributions. Check out our guide to see how to [get started](https://infisical.com/docs/contributing/getting-started).
 
 Not sure where to get started? You can:
 
--   [Book a free, non-pressure pairing sessions with one of our teammates](mailto:tony@infisical.com?subject=Pairing%20session&body=I'd%20like%20to%20do%20a%20pairing%20session!)!
--   Join our <a href="https://join.slack.com/t/infisical-users/shared_invite/zt-1kdbk07ro-RtoyEt_9E~fyzGo_xQYP6g">Slack</a>, and ask us any questions there.
+- Join our <a href="https://infisical.com/slack">Slack</a>, and ask us any questions there.
 
-## 🦸 Contributors
+## Resources
 
-[//]: contributor-faces
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-
-<a href="https://github.com/dangtony98"><img src="https://avatars.githubusercontent.com/u/25857006?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/maidul98"><img src="https://avatars.githubusercontent.com/u/9300960?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/akhilmhdh"><img src="https://avatars.githubusercontent.com/u/31166322?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/reginaldbondoc"><img src="https://avatars.githubusercontent.com/u/7693108?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/mv-turtle"><img src="https://avatars.githubusercontent.com/u/78047717?s=96&v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/gangjun06"><img src="https://avatars.githubusercontent.com/u/50910815?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/asheliahut"><img src="https://avatars.githubusercontent.com/u/945619?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/SH5H"><img src="https://avatars.githubusercontent.com/u/25437192?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/gmgale"><img src="https://avatars.githubusercontent.com/u/62303146?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/asharonbaltazar"><img src="https://avatars.githubusercontent.com/u/58940073?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/JoaoVictor6"><img src="https://avatars.githubusercontent.com/u/68869379?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/mocherfaoui"><img src="https://avatars.githubusercontent.com/u/37941426?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/cerrussell"><img src="https://avatars.githubusercontent.com/u/80227828?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/jon4hz"><img src="https://avatars.githubusercontent.com/u/26183582?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/edgarrmondragon"><img src="https://avatars.githubusercontent.com/u/16805946?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/arjunyel"><img src="https://avatars.githubusercontent.com/u/11153289?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/LemmyMwaura"><img src="https://avatars.githubusercontent.com/u/20738858?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/Zamion101"><img src="https://avatars.githubusercontent.com/u/8071263?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/Grraahaam"><img src="https://avatars.githubusercontent.com/u/72856427?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/Neeraj138"><img src="https://avatars.githubusercontent.com/u/58552561?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/esau-morais"><img src="https://avatars.githubusercontent.com/u/55207584?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/animeshdas2000"><img src="https://avatars.githubusercontent.com/u/40542456?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/umrak11"><img src="https://avatars.githubusercontent.com/u/20104948?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/KunalSin9h"><img src="https://avatars.githubusercontent.com/u/82411321?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/ImBIOS"><img src="https://avatars.githubusercontent.com/u/41441643?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/sanyamjain04"><img src="https://avatars.githubusercontent.com/u/107163858?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/Gabriellopes232"><img src="https://avatars.githubusercontent.com/u/74881862?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/naorpeled"><img src="https://avatars.githubusercontent.com/u/6171622?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/Aashish-Upadhyay-101"><img src="https://avatars.githubusercontent.com/u/81024263?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/jonerrr"><img src="https://avatars.githubusercontent.com/u/73760377?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/kmlgkcy"><img src="https://avatars.githubusercontent.com/u/102428035?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/samsbg"><img src="https://avatars.githubusercontent.com/u/70488844?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/imakecodes"><img src="https://avatars.githubusercontent.com/u/35536648?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/bngmnn"><img src="https://avatars.githubusercontent.com/u/88746983?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/kimcore"><img src="https://avatars.githubusercontent.com/u/36142378?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/caioluis"><img src="https://avatars.githubusercontent.com/u/30005368?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/alisson-acioli"><img src="https://avatars.githubusercontent.com/u/12742051?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/adrianmarinwork"><img src="https://avatars.githubusercontent.com/u/118568289?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/arthurzenika"><img src="https://avatars.githubusercontent.com/u/445200?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/franky47"><img src="https://avatars.githubusercontent.com/u/1174092?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/hanywang2"><img src="https://avatars.githubusercontent.com/u/44352119?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/tobias-mintlify"><img src="https://avatars.githubusercontent.com/u/110702161?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/wjhurley"><img src="https://avatars.githubusercontent.com/u/15939055?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/alexdanilowicz"><img src="https://avatars.githubusercontent.com/u/29822597?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/0xflotus"><img src="https://avatars.githubusercontent.com/u/26602940?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/wanjohiryan"><img src="https://avatars.githubusercontent.com/u/71614375?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/nirga"><img src="https://avatars.githubusercontent.com/u/4224692?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/RashidUjang"><img src="https://avatars.githubusercontent.com/u/11313829?v=4" width="50" height="50" alt=""/></a> <a href="https://github.com/kanhaiya38"><img src="https://avatars.githubusercontent.com/u/54778773?v=4" width="50" height="50" alt=""/></a>
-
-## 🌎 Translations
-
-Infisical is currently available in English, Korean, French, and Portuguese (Brazil). Help us translate Infisical to your language!
-
-You can find all the info in [this issue](https://github.com/Infisical/infisical/issues/181).
+- [Docs](https://infisical.com/docs/documentation/getting-started/introduction) for comprehensive documentation and guides
+- [Slack](https://infisical.com/slack) for discussion with the community and Infisical team.
+- [GitHub](https://github.com/Infisical/infisical) for code, issues, and pull requests
+- [Twitter](https://twitter.com/infisical) for fast news
+- [YouTube](https://www.youtube.com/@infisical_os) for videos on secret management
+- [Blog](https://infisical.com/blog) for secret management insights, articles, tutorials, and updates

@@ -1,21 +1,21 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery } from "@tanstack/react-query";
 
-import { apiRequest } from '@app/config/request';
+import { apiRequest } from "@app/config/request";
 
-import { GetSubscriptionPlan } from './types';
+import { SubscriptionPlan } from "./types";
 
 // import { Workspace } from './types';
 
-const subscriptionKeys = {
-  getOrgSubsription: (orgID: string) => ['subscription', { orgID }] as const
+export const subscriptionQueryKeys = {
+  getOrgSubsription: (orgID: string) => ["plan", { orgID }] as const
 };
 
-const fetchOrgSubscription = async (orgID: string) => {
-  const { data } = await apiRequest.get<{ subscriptions: GetSubscriptionPlan }>(
-    `/api/v1/organization/${orgID}/subscriptions`
+export const fetchOrgSubscription = async (orgID: string) => {
+  const { data } = await apiRequest.get<{ plan: SubscriptionPlan }>(
+    `/api/v1/organizations/${orgID}/plan`
   );
 
-  return data.subscriptions;
+  return data.plan;
 };
 
 type UseGetOrgSubscriptionProps = {
@@ -24,7 +24,7 @@ type UseGetOrgSubscriptionProps = {
 
 export const useGetOrgSubscription = ({ orgID }: UseGetOrgSubscriptionProps) =>
   useQuery({
-    queryKey: subscriptionKeys.getOrgSubsription(orgID),
+    queryKey: subscriptionQueryKeys.getOrgSubsription(orgID),
     queryFn: () => fetchOrgSubscription(orgID),
     enabled: Boolean(orgID)
   });

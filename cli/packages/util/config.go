@@ -1,14 +1,16 @@
 package util
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
 
+	"github.com/Infisical/infisical-merge/packages/config"
 	"github.com/Infisical/infisical-merge/packages/models"
-	log "github.com/sirupsen/logrus"
+	"github.com/rs/zerolog/log"
 )
 
 func WriteInitalConfig(userCredentials *models.UserCredentials) error {
@@ -31,9 +33,29 @@ func WriteInitalConfig(userCredentials *models.UserCredentials) error {
 		return fmt.Errorf("writeInitalConfig: unable to write config file because [err=%s]", err)
 	}
 
+	//if profiles exists
+	loggedInUser := models.LoggedInUser{
+		Email:  userCredentials.Email,
+		Domain: config.INFISICAL_URL,
+	}
+	//if empty or if email not in loggedinUsers
+	if len(existingConfigFile.LoggedInUsers) == 0 || !ConfigContainsEmail(existingConfigFile.LoggedInUsers, userCredentials.Email) {
+		existingConfigFile.LoggedInUsers = append(existingConfigFile.LoggedInUsers, loggedInUser)
+	} else {
+		//if exists update domain of loggedin users
+		for idx, user := range existingConfigFile.LoggedInUsers {
+			if user.Email == userCredentials.Email {
+				existingConfigFile.LoggedInUsers[idx] = loggedInUser
+			}
+		}
+	}
+
 	configFile := models.ConfigFile{
-		LoggedInUserEmail: userCredentials.Email,
-		VaultBackendType:  existingConfigFile.VaultBackendType,
+		LoggedInUserEmail:      userCredentials.Email,
+		LoggedInUserDomain:     config.INFISICAL_URL,
+		LoggedInUsers:          existingConfigFile.LoggedInUsers,
+		VaultBackendType:       existingConfigFile.VaultBackendType,
+		VaultBackendPassphrase: existingConfigFile.VaultBackendPassphrase,
 	}
 
 	configFileMarshalled, err := json.Marshal(configFile)
@@ -53,7 +75,7 @@ func WriteInitalConfig(userCredentials *models.UserCredentials) error {
 func ConfigFileExists() bool {
 	fullConfigFileURI, _, err := GetFullConfigFilePath()
 	if err != nil {
-		log.Debugln("There was an error when creating the full path to config file", err)
+		log.Debug().Err(err).Msgf("There was an error when creating the full path to config file")
 		return false
 	}
 
@@ -68,7 +90,7 @@ func WorkspaceConfigFileExistsInCurrentPath() bool {
 	if _, err := os.Stat(INFISICAL_WORKSPACE_CONFIG_FILE_NAME); err == nil {
 		return true
 	} else {
-		log.Debugln(err)
+		log.Debug().Err(err)
 		return false
 	}
 }
@@ -80,6 +102,28 @@ func GetWorkSpaceFromFile() (models.WorkspaceConfigFile, error) {
 	}
 
 	configFileAsBytes, err := os.ReadFile(cfgFile)
+	if err != nil {
+		return models.WorkspaceConfigFile{}, err
+	}
+
+	var workspaceConfigFile models.WorkspaceConfigFile
+	err = json.Unmarshal(configFileAsBytes, &workspaceConfigFile)
+	if err != nil {
+		return models.WorkspaceConfigFile{}, err
+	}
+
+	return workspaceConfigFile, nil
+}
+
+func GetWorkSpaceFromFilePath(configFileDir string) (models.WorkspaceConfigFile, error) {
+	configFilePath := filepath.Join(configFileDir, ".infisical.json")
+
+	_, configFileStatusError := os.Stat(configFilePath)
+	if os.IsNotExist(configFileStatusError) {
+		return models.WorkspaceConfigFile{}, fmt.Errorf("file %s does not exist", configFilePath)
+	}
+
+	configFileAsBytes, err := os.ReadFile(configFilePath)
 	if err != nil {
 		return models.WorkspaceConfigFile{}, err
 	}
@@ -105,7 +149,7 @@ func FindWorkspaceConfigFile() (string, error) {
 		_, err := os.Stat(path)
 		if err == nil {
 			// file found
-			log.Debugf("FindWorkspaceConfigFile: workspace file found at [path=%s]", path)
+			log.Debug().Msgf("FindWorkspaceConfigFile: workspace file found at [path=%s]", path)
 
 			return path, nil
 		}
@@ -173,10 +217,18 @@ func GetConfigFile() (models.ConfigFile, error) {
 		return models.ConfigFile{}, err
 	}
 
+	if configFile.VaultBackendPassphrase != "" {
+		decodedPassphrase, err := base64.StdEncoding.DecodeString(configFile.VaultBackendPassphrase)
+		if err != nil {
+			return models.ConfigFile{}, fmt.Errorf("GetConfigFile: Unable to decode base64 passphrase [err=%s]", err)
+		}
+		os.Setenv("INFISICAL_VAULT_FILE_PASSPHRASE", string(decodedPassphrase))
+	}
+
 	return configFile, nil
 }
 
-// Write a ConfigFile to disk. Raise error if unable to save the model to ask
+// Write a ConfigFile to disk. Raise error if unable to save the model to disk
 func WriteConfigFile(configFile *models.ConfigFile) error {
 	fullConfigFilePath, fullConfigFileDirPath, err := GetFullConfigFilePath()
 	if err != nil {
@@ -200,11 +252,6 @@ func WriteConfigFile(configFile *models.ConfigFile) error {
 	err = os.WriteFile(fullConfigFilePath, configFileMarshalled, 0600)
 	if err != nil {
 		return fmt.Errorf("writeConfigFile: Unable to write to file [err=%s]", err)
-	}
-
-	if err != nil {
-		return fmt.Errorf("writeConfigFile: unable to write config file because an error occurred when write the config to file [err=%s]", err)
-
 	}
 
 	return nil

@@ -8,7 +8,7 @@ import (
 	"github.com/mattn/go-isatty"
 	"github.com/muesli/ansi"
 	"github.com/muesli/reflow/truncate"
-	log "github.com/sirupsen/logrus"
+	"github.com/rs/zerolog/log"
 	"golang.org/x/term"
 )
 
@@ -39,9 +39,9 @@ func Table(headers [3]string, rows [][3]string) {
 	width, _, err := term.GetSize(int(os.Stdout.Fd()))
 	if err != nil {
 		if shouldTruncate {
-			log.Errorf("error getting terminal size: %s", err)
+			log.Error().Msgf("error getting terminal size: %s", err)
 		} else {
-			log.Debug(err)
+			log.Debug().Err(err)
 		}
 	}
 
@@ -92,6 +92,33 @@ func getLongestValues(rows [][3]string) (longestSecretName, longestSecretType in
 		}
 	}
 	return
+}
+
+func GenericTable(headers []string, rows [][]string) {
+	t := table.NewWriter()
+	t.SetOutputMirror(os.Stdout)
+	t.SetStyle(table.StyleLight)
+
+	// t.SetTitle(tableOptions.Title)
+	t.Style().Options.DrawBorder = true
+	t.Style().Options.SeparateHeader = true
+	t.Style().Options.SeparateColumns = true
+
+	tableHeaders := table.Row{}
+	for _, header := range headers {
+		tableHeaders = append(tableHeaders, header)
+	}
+
+	t.AppendHeader(tableHeaders)
+	for _, row := range rows {
+		tableRow := table.Row{}
+		for _, val := range row {
+			tableRow = append(tableRow, val)
+		}
+		t.AppendRow(tableRow)
+	}
+
+	t.Render()
 }
 
 // stringWidth returns the width of a string.

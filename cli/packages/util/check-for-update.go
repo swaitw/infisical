@@ -4,26 +4,31 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	log "github.com/sirupsen/logrus"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"os/exec"
 	"runtime"
+	"strings"
 
 	"github.com/fatih/color"
+	"github.com/rs/zerolog/log"
 )
 
 func CheckForUpdate() {
 	if checkEnv := os.Getenv("INFISICAL_DISABLE_UPDATE_CHECK"); checkEnv != "" {
 		return
 	}
-	latestVersion, err := getLatestTag("Infisical", "infisical")
+	latestVersion, _, err := getLatestTag("Infisical", "infisical")
 	if err != nil {
-		log.Debug(err)
+		log.Debug().Err(err)
 		// do nothing and continue
 		return
 	}
+
+	// daysSinceRelease, _ := daysSinceDate(publishedDate)
+
 	if latestVersion != CLI_VERSION {
 		yellow := color.New(color.FgYellow).SprintFunc()
 		blue := color.New(color.FgCyan).SprintFunc()
@@ -48,32 +53,38 @@ func CheckForUpdate() {
 	}
 }
 
-func getLatestTag(repoOwner string, repoName string) (string, error) {
-	url := fmt.Sprintf("https://api.github.com/repos/%s/%s/tags", repoOwner, repoName)
+func getLatestTag(repoOwner string, repoName string) (string, string, error) {
+	url := fmt.Sprintf("https://api.github.com/repos/%s/%s/releases/latest", repoOwner, repoName)
 	resp, err := http.Get(url)
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 	if resp.StatusCode != 200 {
-		return "", errors.New(fmt.Sprintf("gitHub API returned status code %d", resp.StatusCode))
+		return "", "", errors.New(fmt.Sprintf("gitHub API returned status code %d", resp.StatusCode))
 	}
 
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 
-	var tags []struct {
-		Name string `json:"name"`
+	var releaseDetails struct {
+		TagName     string `json:"tag_name"`
+		PublishedAt string `json:"published_at"`
 	}
 
-	if err := json.Unmarshal(body, &tags); err != nil {
-		return "", fmt.Errorf("failed to unmarshal github response: %w", err)
+	if err := json.Unmarshal(body, &releaseDetails); err != nil {
+		return "", "", fmt.Errorf("failed to unmarshal github response: %w", err)
 	}
 
-	return tags[0].Name[1:], nil
+	tag_prefix := "infisical-cli/v"
+
+	// Extract the version from the first valid tag
+	version := strings.TrimPrefix(releaseDetails.TagName, tag_prefix)
+
+	return version, releaseDetails.PublishedAt, nil
 }
 
 func GetUpdateInstructions() string {
@@ -125,3 +136,29 @@ func getLinuxPackageManager() string {
 
 	return ""
 }
+
+func IsRunningInDocker() bool {
+	if _, err := os.Stat("/.dockerenv"); err == nil {
+		return true
+	}
+
+	cgroup, err := ioutil.ReadFile("/proc/self/cgroup")
+	if err != nil {
+		return false
+	}
+
+	return strings.Contains(string(cgroup), "docker")
+}
+
+// func daysSinceDate(dateString string) (int, error) {
+// 	layout := "2006-01-02T15:04:05Z"
+// 	parsedDate, err := time.Parse(layout, dateString)
+// 	if err != nil {
+// 		return 0, err
+// 	}
+
+// 	currentTime := time.Now()
+// 	difference := currentTime.Sub(parsedDate)
+// 	days := int(difference.Hours() / 24)
+// 	return days, nil
+// }

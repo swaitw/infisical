@@ -1,34 +1,43 @@
 /* eslint-disable no-param-reassign */
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import {
-  decryptAssymmetric,
-  decryptSymmetric
-} from '@app/components/utilities/cryptography/crypto';
-import { apiRequest } from '@app/config/request';
+import { apiRequest } from "@app/config/request";
 
-import { DecryptedSecret } from '../secrets/types';
+import { SecretType, SecretV3RawSanitized } from "../secrets/types";
 import {
-  GetWorkspaceSecretSnapshotsDTO,
+  TGetSecretSnapshotsDTO,
   TSecretRollbackDTO,
-  TSnapshotSecret,
-  TSnapshotSecretProps,
-  TWorkspaceSecretSnapshot
-} from './types';
+  TSecretSnapshot,
+  TSnapshotData,
+  TSnapshotDataProps
+} from "./types";
 
 export const secretSnapshotKeys = {
-  list: (workspaceId: string) => [{ workspaceId }, 'secret-snapshot'] as const,
-  snapshotSecrets: (snapshotId: string) => [{ snapshotId }, 'secret-snapshot'] as const,
-  count: (workspaceId: string) => [{ workspaceId }, 'count', 'secret-snapshot']
+  list: ({ workspaceId, environment, directory }: Omit<TGetSecretSnapshotsDTO, "limit">) =>
+    [{ workspaceId, environment, directory }, "secret-snapshot"] as const,
+  snapshotData: (snapshotId: string) => [{ snapshotId }, "secret-snapshot"] as const,
+  count: ({ environment, workspaceId, directory }: Omit<TGetSecretSnapshotsDTO, "limit">) => [
+    { workspaceId, environment, directory },
+    "count",
+    "secret-snapshot"
+  ]
 };
 
-const fetchWorkspaceSecretSnaphots = async (workspaceId: string, limit = 10, offset = 0) => {
-  const res = await apiRequest.get<{ secretSnapshots: TWorkspaceSecretSnapshot[] }>(
+const fetchWorkspaceSnaphots = async ({
+  workspaceId,
+  environment,
+  directory = "/",
+  limit = 10,
+  offset = 0
+}: TGetSecretSnapshotsDTO & { offset: number }) => {
+  const res = await apiRequest.get<{ secretSnapshots: TSecretSnapshot[] }>(
     `/api/v1/workspace/${workspaceId}/secret-snapshots`,
     {
       params: {
         limit,
-        offset
+        offset,
+        environment,
+        path: directory
       }
     }
   );
@@ -36,119 +45,122 @@ const fetchWorkspaceSecretSnaphots = async (workspaceId: string, limit = 10, off
   return res.data.secretSnapshots;
 };
 
-export const useGetWorkspaceSecretSnapshots = (dto: GetWorkspaceSecretSnapshotsDTO) =>
+export const useGetWorkspaceSnapshotList = (dto: TGetSecretSnapshotsDTO & { isPaused?: boolean }) =>
   useInfiniteQuery({
-    enabled: Boolean(dto.workspaceId),
-    queryKey: secretSnapshotKeys.list(dto.workspaceId),
-    queryFn: ({ pageParam }) => fetchWorkspaceSecretSnaphots(dto.workspaceId, dto.limit, pageParam),
+    initialPageParam: 0,
+    enabled: Boolean(dto.workspaceId && dto.environment) && !dto.isPaused,
+    queryKey: secretSnapshotKeys.list({ ...dto }),
+    queryFn: ({ pageParam }) => fetchWorkspaceSnaphots({ ...dto, offset: pageParam }),
     getNextPageParam: (lastPage, pages) =>
       lastPage.length !== 0 ? pages.length * dto.limit : undefined
   });
 
 const fetchSnapshotEncSecrets = async (snapshotId: string) => {
-  const res = await apiRequest.get<{ secretSnapshot: TSnapshotSecret }>(
+  const res = await apiRequest.get<{ secretSnapshot: TSnapshotData }>(
     `/api/v1/secret-snapshot/${snapshotId}`
   );
   return res.data.secretSnapshot;
 };
 
-export const useGetSnapshotSecrets = ({ decryptFileKey, env, snapshotId }: TSnapshotSecretProps) =>
+export const useGetSnapshotSecrets = ({ snapshotId }: TSnapshotDataProps) =>
   useQuery({
-    queryKey: secretSnapshotKeys.snapshotSecrets(snapshotId),
-    enabled: Boolean(snapshotId && decryptFileKey),
+    queryKey: secretSnapshotKeys.snapshotData(snapshotId),
+    enabled: Boolean(snapshotId),
     queryFn: () => fetchSnapshotEncSecrets(snapshotId),
     select: (data) => {
-      const PRIVATE_KEY = localStorage.getItem('PRIVATE_KEY') as string;
-      const latestKey = decryptFileKey;
-      const key = decryptAssymmetric({
-        ciphertext: latestKey.encryptedKey,
-        nonce: latestKey.nonce,
-        publicKey: latestKey.sender.publicKey,
-        privateKey: PRIVATE_KEY
-      });
-
-      const sharedSecrets: DecryptedSecret[] = [];
+      const sharedSecrets: SecretV3RawSanitized[] = [];
       const personalSecrets: Record<string, { id: string; value: string }> = {};
-      data.secretVersions
-        .filter(({ environment }) => environment === env)
-        .forEach((encSecret) => {
-          const secretKey = decryptSymmetric({
-            ciphertext: encSecret.secretKeyCiphertext,
-            iv: encSecret.secretKeyIV,
-            tag: encSecret.secretKeyTag,
-            key
-          });
+      data.secretVersions.forEach((secretVersion) => {
+        const decryptedSecret = {
+          id: secretVersion.secretId,
+          env: data.environment.slug,
+          key: secretVersion.secretKey,
+          value: secretVersion.secretValue || "",
+          tags: secretVersion.tags,
+          comment: secretVersion.secretComment,
+          createdAt: secretVersion.createdAt,
+          updatedAt: secretVersion.updatedAt,
+          type: "modified",
+          version: secretVersion.version
+        };
 
-          const secretValue = decryptSymmetric({
-            ciphertext: encSecret.secretValueCiphertext,
-            iv: encSecret.secretValueIV,
-            tag: encSecret.secretValueTag,
-            key
-          });
-
-          const secretComment = '';
-
-          const decryptedSecret = {
-            _id: encSecret.secret,
-            env: encSecret.environment,
-            key: secretKey,
-            value: secretValue,
-            tags: encSecret.tags,
-            comment: secretComment,
-            createdAt: encSecret.createdAt,
-            updatedAt: encSecret.updatedAt,
-            type: 'modified'
+        if (secretVersion.type === SecretType.Personal) {
+          personalSecrets[decryptedSecret.key] = {
+            id: secretVersion.secretId,
+            value: secretVersion.secretValue || ""
           };
-
-          if (encSecret.type === 'personal') {
-            personalSecrets[decryptedSecret.key] = { id: encSecret.secret, value: secretValue };
-          } else {
-            sharedSecrets.push(decryptedSecret);
-          }
-        });
+        } else {
+          sharedSecrets.push(decryptedSecret);
+        }
+      });
 
       sharedSecrets.forEach((val) => {
         if (personalSecrets?.[val.key]) {
           val.idOverride = personalSecrets[val.key].id;
           val.valueOverride = personalSecrets[val.key].value;
-          val.overrideAction = 'modified';
+          val.overrideAction = "modified";
         }
       });
 
-      return { version: data.version, secrets: sharedSecrets, createdAt: data.createdAt };
+      return {
+        id: data.id,
+        secrets: sharedSecrets,
+        createdAt: data.createdAt,
+        folders: data.folderVersion
+      };
     }
   });
 
-const fetchWorkspaceSecretSnaphotCount = async (workspaceId: string) => {
+const fetchWorkspaceSecretSnaphotCount = async (
+  workspaceId: string,
+  environment: string,
+  directory = "/"
+) => {
   const res = await apiRequest.get<{ count: number }>(
-    `/api/v1/workspace/${workspaceId}/secret-snapshots/count`
+    `/api/v1/workspace/${workspaceId}/secret-snapshots/count`,
+    {
+      params: {
+        environment,
+        path: directory
+      }
+    }
   );
   return res.data.count;
 };
 
-export const useGetWsSnapshotCount = (workspaceId: string) =>
+export const useGetWsSnapshotCount = ({
+  workspaceId,
+  environment,
+  directory,
+  isPaused
+}: Omit<TGetSecretSnapshotsDTO, "limit"> & { isPaused?: boolean }) =>
   useQuery({
-    enabled: Boolean(workspaceId),
-    queryKey: secretSnapshotKeys.count(workspaceId),
-    queryFn: () => fetchWorkspaceSecretSnaphotCount(workspaceId)
+    enabled: Boolean(workspaceId && environment) && !isPaused,
+    queryKey: secretSnapshotKeys.count({ workspaceId, environment, directory }),
+    queryFn: () => fetchWorkspaceSecretSnaphotCount(workspaceId, environment, directory)
   });
 
 export const usePerformSecretRollback = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<{}, {}, TSecretRollbackDTO>({
-    mutationFn: async (dto) => {
-      const { data } = await apiRequest.post(
-        `/api/v1/workspace/${dto.workspaceId}/secret-snapshots/rollback`,
-        {
-          version: dto.version
-        }
-      );
+  return useMutation<object, object, TSecretRollbackDTO>({
+    mutationFn: async ({ snapshotId }) => {
+      const { data } = await apiRequest.post(`/api/v1/secret-snapshot/${snapshotId}/rollback`);
       return data;
     },
-    onSuccess: (_, dto) => {
-      queryClient.invalidateQueries(secretSnapshotKeys.list(dto.workspaceId));
-      queryClient.invalidateQueries(secretSnapshotKeys.count(dto.workspaceId));
+    onSuccess: (_, { workspaceId, environment, directory }) => {
+      queryClient.invalidateQueries({
+        queryKey: [{ workspaceId, environment, secretPath: directory }, "secrets"]
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["secret-folders", { projectId: workspaceId, environment, path: directory }]
+      });
+      queryClient.invalidateQueries({
+        queryKey: secretSnapshotKeys.list({ workspaceId, environment, directory })
+      });
+      queryClient.invalidateQueries({
+        queryKey: secretSnapshotKeys.count({ workspaceId, environment, directory })
+      });
     }
   });
 };
